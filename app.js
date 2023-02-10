@@ -75,7 +75,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
     document.getElementById("current-" + activePlayer).textContent = 0;
 
     //   toglogchiin eeljiig solin
-    if (score[activePlayer] >= 20) {
+    if (score[activePlayer] >= 100) {
       // togloomiig duusgan
       IsNewGame = false;
       // ylagch gej gargana
