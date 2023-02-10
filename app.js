@@ -33,14 +33,47 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
     document.getElementById("current-" + activePlayer).textContent = roundScore;
   } else {
     // ene toglogchiin eejindee tsugluulsan onoog 0 bolgono
-    roundScore = 0;
-    document.getElementById("current-" + activePlayer).textContent = 0;
-    // ene eelj shiljuulene
-    activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
-    // activ player tohiruulah buyu ulaan tsaeg
-    document.querySelector(".player-0-panel").classList.toggle("active");
-    document.querySelector(".player-1-panel").classList.toggle("active");
-    // shoog tu alga bologonoo
-    diceDo.style.display = "none";
+    switchToNextplayer();
   }
 });
+// hold towch event listner
+document.querySelector(".btn-hold").addEventListener("click", function () {
+  //toglogchiin eeljiin onoog global onoon deer nemj ugnu
+  //   if (activePlayer === 0) {
+  //     score[0] = score[0] + roundScore;
+  //   } else {
+  //     score[1] = score[1] + roundScore;
+  //   }
+  score[activePlayer] = score[activePlayer] + roundScore;
+  //   delgets deer onoog uurchluh
+  document.getElementById("score-" + activePlayer).textContent =
+    score[activePlayer];
+
+  // ээлжийг оноог 0 bolgono
+  roundScore = 0;
+  document.getElementById("current-" + activePlayer).textContent = 0;
+
+  //   toglogchiin eeljiig solin
+  if (score[activePlayer] >= 20) {
+    // ylagch gej gargana
+    document.getElementById("name-" + activePlayer).textContent = "WINNER!!!";
+    document
+      .querySelector(".player-" + activePlayer + "-panel")
+      .classList.add("winner");
+  } else {
+    switchToNextplayer();
+  }
+});
+//   ug toglogch hojson esehiig shalgah
+// ene toglogchiin eeljindee tsugluulsan onoog 0 bolgon
+function switchToNextplayer() {
+  roundScore = 0;
+  document.getElementById("current-" + activePlayer).textContent = 0;
+  // ene eelj shiljuulene
+  activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
+  // activ player tohiruulah buyu ulaan tsaeg
+  document.querySelector(".player-0-panel").classList.toggle("active");
+  document.querySelector(".player-1-panel").classList.toggle("active");
+  // shoog tu alga bologonoo
+  diceDom.style.display = "none";
+}
