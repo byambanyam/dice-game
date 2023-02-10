@@ -3,10 +3,13 @@ var activePlayer;
 var score;
 var roundScore;
 var diceDom = document.querySelector(".dice");
+// togloom duussan esehiig hadaglah huwisagch
+var IsNewGame;
 //togloomiig ehluullee
 InitGame();
 
 function InitGame() {
+  IsNewGame = true;
   activePlayer = 0;
   // тоглогчдын цуглуулсан оноог хадаглах хувьсагч хэрэгтэй
   score = [0, 0];
@@ -36,54 +39,59 @@ function InitGame() {
 
 // shoo shideh heseg
 document.querySelector(".btn-roll").addEventListener("click", function () {
-  // 1-6 Хүртэл  санамсаргүй нэг то гаргаж авна
-  var diceNumber = Math.floor(Math.random() * 6) + 1;
-  //   шооны зэргыг вэб дээр гаргаж ирнэ
-  diceDom.style.display = "inline-block";
-  //   олсон санамсаргүй утгад харгалзах шооны зургыг вэб дээр үзүүлэнэ.
+  if (IsNewGame !== false) {
+    // 1-6 Хүртэл  санамсаргүй нэг то гаргаж авна
+    var diceNumber = Math.floor(Math.random() * 6) + 1;
+    //   шооны зэргыг вэб дээр гаргаж ирнэ
+    diceDom.style.display = "inline-block";
+    //   олсон санамсаргүй утгад харгалзах шооны зургыг вэб дээр үзүүлэнэ.
 
-  diceDom.src = "dice-" + diceNumber + ".png";
-  //  buusan toon 1 ees ylgaatai bol idwehtei tolgogchiin eeljiin toog nemegduulne toglogchiin eeljiin onoog oorchilno oo
-  if (diceNumber !== 1) {
-    // 1-s ylgaatai too buulaa
+    diceDom.src = "dice-" + diceNumber + ".png";
+    //  buusan toon 1 ees ylgaatai bol idwehtei tolgogchiin eeljiin toog nemegduulne toglogchiin eeljiin onoog oorchilno oo
+    if (diceNumber !== 1) {
+      // 1-s ylgaatai too buulaa
 
-    roundScore = roundScore + diceNumber;
-    document.getElementById("current-" + activePlayer).textContent = roundScore;
+      roundScore = roundScore + diceNumber;
+      document.getElementById("current-" + activePlayer).textContent =
+        roundScore;
+    } else {
+      // ene toglogchiin eejindee tsugluulsan onoog 0 bolgono
+      switchToNextplayer();
+    }
   } else {
-    // ene toglogchiin eejindee tsugluulsan onoog 0 bolgono
-    switchToNextplayer();
+    alert("togloom duussan bain new game towch darna uu ");
   }
 });
 // hold towch event listner
 document.querySelector(".btn-hold").addEventListener("click", function () {
-  //toglogchiin eeljiin onoog global onoon deer nemj ugnu
-  //   if (activePlayer === 0) {
-  //     score[0] = score[0] + roundScore;
-  //   } else {
-  //     score[1] = score[1] + roundScore;
-  //   }
-  score[activePlayer] = score[activePlayer] + roundScore;
-  //   delgets deer onoog uurchluh
-  document.getElementById("score-" + activePlayer).textContent =
-    score[activePlayer];
+  if (IsNewGame) {
+    score[activePlayer] = score[activePlayer] + roundScore;
+    //   delgets deer onoog uurchluh
+    document.getElementById("score-" + activePlayer).textContent =
+      score[activePlayer];
 
-  // ээлжийг оноог 0 bolgono
-  roundScore = 0;
-  document.getElementById("current-" + activePlayer).textContent = 0;
+    // ээлжийг оноог 0 bolgono
+    roundScore = 0;
+    document.getElementById("current-" + activePlayer).textContent = 0;
 
-  //   toglogchiin eeljiig solin
-  if (score[activePlayer] >= 20) {
-    // ylagch gej gargana
-    document.getElementById("name-" + activePlayer).textContent = "WINNER!!!";
-    document
-      .querySelector(".player-" + activePlayer + "-panel")
-      .classList.add("winner");
+    //   toglogchiin eeljiig solin
+    if (score[activePlayer] >= 20) {
+      // togloomiig duusgan
+      IsNewGame = false;
+      // ylagch gej gargana
+      document.getElementById("name-" + activePlayer).textContent = "WINNER!!!";
+      document
+        .querySelector(".player-" + activePlayer + "-panel")
+        .classList.add("winner");
 
-    document
-      .querySelector(".player-" + activePlayer + "-panel")
-      .classList.remove("active");
+      document
+        .querySelector(".player-" + activePlayer + "-panel")
+        .classList.remove("active");
+    } else {
+      switchToNextplayer();
+    }
   } else {
-    switchToNextplayer();
+    alert("new game towch darna uu");
   }
 });
 //   ug toglogch hojson esehiig shalgah
